@@ -25,7 +25,7 @@ app.use(routes);  // isto tem que ficar embaixo de json library
 
 app.listen(3333); //localhost:3333
 
-const firebase = require("firebase");
+/*const firebase = require("firebase");
 const credentials = require ('./database/credentials');
 firebase.initializeApp(credentials.firebaseConfig);
 
@@ -71,7 +71,7 @@ let query = booksRef.where('capital', '==', false).get()
 // Remove the 'capital' field from the document
 let removePopulation = booksRef.doc('SF').update({
   population: firebase.firestore.FieldValue.delete()
-});
+});*/
 
 // delete all collection
 // https://firebase.google.com/docs/firestore/manage-data/delete-data

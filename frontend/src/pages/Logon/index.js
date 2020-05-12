@@ -12,21 +12,25 @@ import heroesImg from '../../assets/heroes.png';
 
 export default function Logon(){
 
-    const [id, setId] = useState('');
+    //const [id, setId] = useState('');
+    const [email, setEmail ] = useState('');
+    const [password, setPassword ] = useState('');
+   
     const history = useHistory();
+    
 
     async function handleLogin(e) {
         e.preventDefault(); //USar em todo formulario
         
         try {
-            const response = await api.post('sessions', { id });
+            const response = await api.post('sessions', { email, password });
             //Salvar no almacenamento local
             /*
             Verificar no browser console:  Application -> Local Storage -> localhost:3000
             voce verao ongId e ongName
-             */
-            localStorage.setItem('ongId', id);
-            localStorage.setItem('ongName', response.data.name);
+             */            
+            localStorage.setItem('userId', response.data.token);
+            //localStorage.setItem('ongName', response.data.name);
             
             history.push('/profile');
             //console.log(response.data.name);
@@ -42,11 +46,21 @@ export default function Logon(){
 
                 <form onSubmit={handleLogin}>
                     <h1>Faca seu Logon</h1>
+                   
                     <input 
-                        placeholder="Sua ID" 
-                        value={id}
-                        onChange={ e => setId(e.target.value) }
+                        type="email" 
+                        placeholder="E-mail" 
+                        value={email}
+                        onChange={e => setEmail(e.target.value) }
                     />
+                    <input 
+                        type="password" 
+                        placeholder="Password" 
+                        value={password}
+                        onChange={e => setPassword(e.target.value) }
+                    />
+                    
+
                     <button type="submit" className="button" >Entrar</button>                
 
                     <Link className="back-link" to="/register">

@@ -8,24 +8,19 @@ import './styles.css'
 import logoImg from '../../assets/logo.svg';
 
 export default function Register() {
-    
-    const [name, setName ] = useState('');
+        
     const [email, setEmail ] = useState('');
-    const [whatsapp, setWhatsapp ] = useState('');
-    const [city, setCity ] = useState('');
-    const [uf, setUf ] = useState('');
+    const [password, setPassword ] = useState('');
+   
 
     const history = useHistory();
 
     async function handleRegister(e) {
         e.preventDefault();
 
-        const data = {
-            name,
+        const data = {            
             email,
-            whatsapp,
-            city,
-            uf
+            password           
         };
 
         try{
@@ -53,12 +48,7 @@ export default function Register() {
                         nao tenho cadastro
                     </Link>   
                 </section>
-                <form onSubmit={handleRegister}>
-                    <input 
-                        placeholder="nome da Ong"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                    />
+                <form onSubmit={handleRegister}>                    
                     <input 
                         type="email" 
                         placeholder="E-mail" 
@@ -66,24 +56,13 @@ export default function Register() {
                         onChange={e => setEmail(e.target.value) }
                     />
                     <input 
-                        placeholder="Whatsapp" 
-                        value={whatsapp}
-                        onChange={e => setWhatsapp(e.target.value) }
+                        type="password" 
+                        placeholder="Password" 
+                        value={password}
+                        onChange={e => setPassword(e.target.value) }
                     />
-
-                    <div className="input-group">
-                        <input 
-                            placeholder="Cidade" 
-                            value={city}
-                            onChange={e => setCity(e.target.value) }
-                        />
-                        <input
-                            placeholder="UF" 
-                            style={{ width:80 }}
-                            value={uf}
-                            onChange={e => setUf(e.target.value) }
-                        />                       
-                    </div>
+                    
+                                        
                     <button className="button" type="submit" >Cadastrar</button>
                 </form>
             </div>
