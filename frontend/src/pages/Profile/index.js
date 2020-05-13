@@ -15,7 +15,7 @@ export default function Profile() {
     const [incidents, setIncidents] = useState([]);
     const ongId = localStorage.getItem('ongId');
     const ongName = localStorage.getItem('ongName');
-    
+
 
     useEffect(() => {
         api.get('profile', {
@@ -33,9 +33,11 @@ export default function Profile() {
                 headers: {
                     Authorization: ongId,
                 }
-            }); 
+            });
+                console.log('__________________________', id);
+
             //Para atualizar os incidentes, na UI, automaticamente depois de deletar
-            setIncidents(incidents.filter(incident => incident.id !== id));
+            setIncidents(incidents.filter(incident => incident.title !== id));
         }catch (err){
             alert('Erro ao deletar caso');
         }
@@ -43,7 +45,7 @@ export default function Profile() {
 
     function handleLogout() {
         //Remover os dados de localStorage
-        localStorage.clear();    
+        localStorage.clear();
         history.push('/');
     }
 
@@ -54,14 +56,14 @@ export default function Profile() {
                 <span>Bem vinda {ongName} </span>
 
                 <Link className="button" to="/incidents/new" >Cadastrar novo caso</Link>
-                <button onClick={handleLogout} type="button" > 
+                <button onClick={handleLogout} type="button" >
                     <FiPower size={18} color="#E02041" />
                 </button>
             </header>
 
             <h1>Casos cadastrados</h1>
 
-            <ul>                
+            <ul>
                 {incidents.map(incident => (
                     <li key={incident.id} >
                         <strong>Caso:</strong>
@@ -72,7 +74,7 @@ export default function Profile() {
                         <strong>VALOR:</strong>
                         <p> {Intl.NumberFormat('pt-BR', {style:'currency', currency:'BRL' }).format(incident.value)} </p>
 
-                        <button onClick={() => handleDeleteIncident(incident.id)} type="button" >
+                        <button onClick={() => handleDeleteIncident(incident.title)} type="button" >
                             <FiTrash2 size={20} color="#a8a8b3" />
                         </button>
                     </li>
