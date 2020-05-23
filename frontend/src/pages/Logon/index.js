@@ -29,7 +29,8 @@ export default function Logon(){
             Verificar no browser console:  Application -> Local Storage -> localhost:3000
             voce verao ongId e ongName
              */            
-            localStorage.setItem('userId', response.data.token);
+            localStorage.setItem('userId', response.data.userId);
+            localStorage.setItem('userName', response.data.userName);
             //localStorage.setItem('ongName', response.data.name);
             
             history.push('/profile');

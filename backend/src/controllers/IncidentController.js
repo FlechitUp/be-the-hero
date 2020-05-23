@@ -1,9 +1,18 @@
 const connection = require('../database/connection');
 const firebase = require("firebase");
+
+var admin = require("firebase-admin")
 const credentials = require ('../database/credentials');
 
 var fAuth = firebase.auth();
+var admin = require("firebase-admin");
+
 var db = firebase.firestore();
+var storage = firebase.database();
+
+
+//var storageRef = firebase.storage().ref();
+//import { storage } from "./firebase";
 
 module.exports = {
     async index(request, response) {
@@ -32,9 +41,11 @@ module.exports = {
 
         //return response.json(incidents); 
     },
-
+    
     async create(request,response){
-        const { title, description, value } = request.body;
+        const busboy = new BusBoy({ headers: request.headers });
+        
+        const { title, description, image, value } = request.body;
         const user_id = request.headers.authorization;
         var incidentId = new Date().getTime();  
         incidentId = incidentId.toString();
@@ -47,10 +58,30 @@ module.exports = {
         //console.log(user_id);
         const id = db.collection('incidents').doc(incidentId).set({
             title: title,
-            description: description,
+            description: description,            
             value:value,
+            image: image,
             user_id:user_id
         });
+        const filePath = '/home/xime/Descargas/1.jpg'
+        
+        const bucket = admin.storage().bucket();
+        console.log('tit ',image);
+        const task = await bucket.upload( filePath, image);
+
+            /*image.name), {
+            destination: '/3.jpg',
+
+            gzip: true,
+            
+        }).then(() => {
+            console.log(`3.jpg uploaded.`);
+        }).catch(err => {
+            console.error('ERROR:', err);
+        });*/
+        /*const img = storage.ref("gs://be-the-hero-project.appspot.com");/*`/images/${image.name}`);/*.put(image)*/
+        //console.log("img", img);
+        
 
         return response.json({ id });
     },

@@ -4,6 +4,7 @@ const firebase = require("firebase");
 const credentials = require ('../database/credentials');
 
 var fAuth = firebase.auth();
+var admin = require("firebase-admin");
 var db = firebase.firestore();
 
 module.exports = {
@@ -23,17 +24,24 @@ module.exports = {
         if (!ong){
             //400 Bad request, alguma coisa eta errada
             return response.status(400).json({ error: 'no Ong found with this id' });
-        }*/
+        }*/        
+        
+        // AUTH SIMGIM USER
         fAuth.signInWithEmailAndPassword(email, password)
             .then(({user})=>{
                 //The promise sends me a user object, now I get the token, and refresh it by sending true (obviously another promise)            
                 user.getIdToken(true)
+                
                 .then((token)=>{
                     response.writeHead(200, {"Content-Type": "application/json"});
                     //console.log(token);
-                    response.end(JSON.stringify({token:token}))
-            /*.then(function(user){
-                return response.json*/
+                    var userName = user.displayName;
+                    var userId = user.uid;
+                    response.end(JSON.stringify({token:token, userId: userId, userName:userName }))
+                    
+
+            //.then(function(user){
+                //return response.json
             })},function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;

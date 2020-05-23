@@ -13,11 +13,21 @@ export default function NewIncident() {
 
     const history = useHistory();
     const [title, setTitle] = useState('');
+    const [image, setImage] = useState(null)
     const [description, setDescription] = useState(''); 
     const [value, setValue] = useState('');
 
     //const ongId = localStorage.getItem('ongId');
     const userId = localStorage.getItem('userId');
+
+    const handleChange = e => {
+        if (e.target.files[0]) {              
+            //var url = URL.createObjectURL(e.target.files[0]);
+            //console.log("wowo ",url);
+            //setImage(URL.createObjectURL(e.target.files[0]));
+            setImage(e.target.files[0]);
+        }        
+    };
 
     async function handleNewIncident(e) {
         e.preventDefault();
@@ -25,9 +35,10 @@ export default function NewIncident() {
         const data = {
             title,
             description,
+            image,
             value,
             userId,
-        };
+        };    
 
         try{
             await api.post('incidents', data, {
@@ -37,10 +48,13 @@ export default function NewIncident() {
             })
             history.push('/profile');
         }catch(err) {
-            alert('Erro ao cadastrar caso, tente novamente');
+            alert('Error al registrar el caso, intente nuevamente');
         }
     }
-    
+
+if (image!=null ) {
+console.log("image1: ",image, window.btoa(image.webkitRelativePath))
+}
     return(
         <div className="new-incident-container">
             <div className="content">
@@ -67,11 +81,14 @@ export default function NewIncident() {
                         onChange={e=>setDescription(e.target.value)}
                     />
                     <input 
+                        type="file"                               
+                        onChange={handleChange}                        
+                    />
+                    <input 
                         placeholder="Valor em reais" 
                         value={value}
                         onChange={e=>setValue(e.target.value)}
                     />
-
                     <button className="button" type="submit" >Cadastrar</button>                   
                 </form>
             </div>

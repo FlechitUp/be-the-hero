@@ -5,6 +5,7 @@
 
 // admin.initializeApp(functions.config().firebase);
 
+var bb = require('express-busboy');
 const express = require('express');  //express e um pacote
 const cors = require('cors');
 const routes = require('./routes'); // routes e um arquivo
@@ -14,6 +15,11 @@ const routes = require('./routes'); // routes e um arquivo
 
 const app = express();
 
+bb.extend(app, {
+  upload: true,
+  path: '/path/to/save/files',
+  allowedPath: /./
+});
 
 app.use(cors());  //Fica asim so pra desenvolivmento
                 // Em producao ficaria asim:
