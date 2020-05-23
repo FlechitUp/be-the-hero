@@ -13,29 +13,27 @@ export default function Profile() {
     const history = useHistory();
 
     const [incidents, setIncidents] = useState([]);
-    const ongId = localStorage.getItem('ongId');
-    const ongName = localStorage.getItem('ongName');
-
+    const userId = localStorage.getItem('userId'); //ongId
+    const userName = localStorage.getItem('userName');
+    
 
     useEffect(() => {
         api.get('profile', {
             headers: {
-                Authorization: ongId,
+                Authorization: userId,
             }
         }).then(response => {
             setIncidents(response.data);
         })
-    }, [ongId] );
+    }, [userId] );
 
     async function handleDeleteIncident(id) {
         try{
             await api.delete(`incidents/${id}`,{
                 headers: {
-                    Authorization: ongId,
+                    Authorization: userId,
                 }
-            });
-                console.log('__________________________', id);
-
+            }); 
             //Para atualizar os incidentes, na UI, automaticamente depois de deletar
             setIncidents(incidents.filter(incident => incident.title !== id));
         }catch (err){
@@ -45,7 +43,7 @@ export default function Profile() {
 
     function handleLogout() {
         //Remover os dados de localStorage
-        localStorage.clear();
+        localStorage.clear();    
         history.push('/');
     }
 
@@ -53,7 +51,7 @@ export default function Profile() {
         <div className="profile-container">
             <header>
                 <img src={logoImg} alt="Be the Hero"/>
-                <span>Bem vinda {ongName} </span>
+                <span>Bem vinda {userName} </span>
 
                 <Link className="button" to="/incidents/new" >Cadastrar novo caso</Link>
                 <button onClick={handleLogout} type="button" >
@@ -63,7 +61,7 @@ export default function Profile() {
 
             <h1>Casos cadastrados</h1>
 
-            <ul>
+            <ul>                
                 {incidents.map(incident => (
                     <li key={incident.id} >
                         <strong>Caso:</strong>

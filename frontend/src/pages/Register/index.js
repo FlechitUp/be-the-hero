@@ -8,7 +8,8 @@ import './styles.css'
 import logoImg from '../../assets/logo.svg';
 
 export default function Register() {
-        
+    
+    const [name, setName ] = useState('');
     const [email, setEmail ] = useState('');
     const [password, setPassword ] = useState('');
    
@@ -18,7 +19,8 @@ export default function Register() {
     async function handleRegister(e) {
         e.preventDefault();
 
-        const data = {            
+        const data = {
+            name,            
             email,
             password           
         };
@@ -49,6 +51,12 @@ export default function Register() {
                     </Link>   
                 </section>
                 <form onSubmit={handleRegister}>                    
+                    <input 
+                        type="text"
+                        placeholder="name"
+                        value={name} 
+                        onChange={e =>setName(e.target.value) }
+                    />                   
                     <input 
                         type="email" 
                         placeholder="E-mail" 
