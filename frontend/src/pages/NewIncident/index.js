@@ -14,38 +14,33 @@ export default function NewIncident() {
     const history = useHistory();
     const [title, setTitle] = useState('');
     const [image, setImage] = useState(null)
-    const [description, setDescription] = useState(''); 
+    const [description, setDescription] = useState('');
     const [value, setValue] = useState('');
 
     //const ongId = localStorage.getItem('ongId');
     const userId = localStorage.getItem('userId');
 
     const handleChange = e => {
-        if (e.target.files[0]) {              
+        if (e.target.files[0]) {
             //var url = URL.createObjectURL(e.target.files[0]);
             //console.log("wowo ",url);
             //setImage(URL.createObjectURL(e.target.files[0]));
             setImage(e.target.files[0]);
-        }        
+        }
     };
 
     async function handleNewIncident(e) {
         e.preventDefault();
 
-        const data = {
-            title,
-            description,
-            image,
-            value,
-            userId,
-        };    
+          const data = new FormData()
+          data.append('file', image)
+          data.append('title', title)
+          data.append('description', description)
+          data.append('value', value)
+          data.append('userId', userId)
 
         try{
-            await api.post('incidents', data, {
-                headers: {
-                    Authorization: userId,/*ongId,*/
-                }
-            })
+            await api.post('incidents', data,{});
             history.push('/profile');
         }catch(err) {
             alert('Error al registrar el caso, intente nuevamente');
@@ -67,29 +62,31 @@ console.log("image1: ",image, window.btoa(image.webkitRelativePath))
                     <Link className="back-link" to="/profile">
                         <FiArrowLeft size={16} color="#E02041" />
                         Voltar para home
-                    </Link>   
+                    </Link>
                 </section>
-                <form onSubmit={handleNewIncident} >
-                    <input 
-                        placeholder="Título do caso" 
+                <form onSubmit={handleNewIncident}
+                      // className="post__form"
+                      // action="/post"
+                      // method="POST"
+                      // encType="multipart/form-data"
+                        >
+                    <input
+                        placeholder="Título do caso"
                         value={title}
                         onChange={e=>setTitle(e.target.value)}
                     />
-                    <textarea 
-                        placeholder="Descricao" 
+                    <textarea
+                        placeholder="Descricao"
                         value={description}
                         onChange={e=>setDescription(e.target.value)}
                     />
-                    <input 
-                        type="file"                               
-                        onChange={handleChange}                        
-                    />
-                    <input 
-                        placeholder="Valor em reais" 
+                    <input type="file" name="myImage" onChange= {handleChange} />
+                    <input
+                        placeholder="Valor em reais"
                         value={value}
                         onChange={e=>setValue(e.target.value)}
                     />
-                    <button className="button" type="submit" >Cadastrar</button>                   
+                    <button className="button" type="submit" >Cadastrar</button>
                 </form>
             </div>
         </div>
