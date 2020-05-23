@@ -38,12 +38,11 @@ module.exports = {
                     console.error(error);
                 }
             });
-        /*const newOng = await db.collection('ongs').doc(id).set({
+        const newOng = await db.collection('ongs').doc(id).set({
             id: id,           
             email: email,
             password: password     
-        })*/        
-        
+        })
         return response.json({ id });
     }
 };

@@ -10,6 +10,7 @@ module.exports = {
   async index(request, response) {
 
     const ong_id = request.headers.authorization;
+
     let allIncidents = []
     const incidents = db.collection('incidents')
     let allCities = incidents.get()
